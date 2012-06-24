@@ -1,12 +1,12 @@
-# VIM for Python and Django Development
+# (g)VIM by offlinehacker 
 
-VIM-PyDjango created by Programmer for Programmer who work on Python & Django 
-everyday.
+VIM by offlinehacker created by Programmer for Programmer who work on different
+computer enegeering tasks every day
 
 It's coming with several features : 
 
-Autocomplete, Pep8 checker, File Manager, Function bar, detect unused module/variable, Auto-Commenting, 
-Python/Django/Custom snippets and many else!
+Autocomplete, Pep8 checker, File Manager, Function bar, detect unused module/variable, 
+Auto-Commenting, snippets and many else!
 
 
 # How it works ?
@@ -18,12 +18,8 @@ Code mistake, unused variable, un-standard Python will checked automatically.
 
 Helpful notification will show on bottom so it not disturb your view.
 
-Not only for python files, it also pay attention for  html, js and all django
+Not only for python files, it also pay attention for  html, js and all web
 related files.
-
-Watch Video example usage on :
-
-http://www.youtube.com/watch?v=a-KfmxoxdfI
 
 # Installation
 
@@ -31,9 +27,9 @@ It using Vundle for manage all plugin. Install Vundle by :
 
     sudo apt-get install git
     cd ~/
-    git clone git://github.com/yodiaditya/vim-pydjango.git
-    ln -s ~/vim-pydjango/.vim ~/.vim
-    ln -s ~/vim-pydjango/.vimrc ~/.vimrc
+    git clone git://github.com/offlinehacker/vim-offlinehacker.git
+    ln -s ~/vim-offlinehacker/.vim ~/.vim
+    ln -s ~/vim-offlinehacker/.vimrc ~/.vimrc
     git clone http://github.com/gmarik/vundle.git ~/.vim/bundle/vundle
 
 To install. please do :
@@ -64,21 +60,9 @@ There are several standards used in this VIM
 4. Auto-Commenter
 
 
-# Debugging Python
-
-For debugging Django with Development Server, I use ipdb
-
-    import ipdb; ipdb.set_trace()
-
-To install ipdb on Ubuntu :
-
-    sudo apt-get install ipython
-    sudo pip install ipdb
-
-
 # Development Rules
 
-VIM-PyDjango use 80 lines terminals ( Good for development )
+VIM-offlinehacker use 80 lines terminals ( Good for development )
 
 It using tab & space size as Python standard.
 
@@ -137,16 +121,8 @@ Fugitive : https://github.com/tpope/vim-fugitive
 
 # Why you should use this ?
 
-VIM-PyDjango using latest and updated VIM plugins and tools. 
+VIM-offlinehacker using latest and updated VIM plugins and tools. 
 
 Cut a lot time for develop python & django applications after use it!
 
 # Deprecated 
-
-I no longer use VIM-Debug from http://github.com/jabapyth/vim-debug.
-
-You can see how to installation and screenshots there.
-
-UltiSnips : http://www.vim.org/scripts/script.php?script_id=2715
-
-NeoComplcache : https://github.com/Shougo/neocomplcache

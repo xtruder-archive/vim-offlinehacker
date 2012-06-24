@@ -25,6 +25,12 @@ Bundle 'godlygeek/csapprox'
 " Utilities
 Bundle 'mhz/vim-matchit'
 Bundle 'Raimondi/delimitMate'
+Bundle "MarcWeber/vim-addon-mw-utils"
+Bundle "tomtom/tlib_vim"
+Bundle "snipmate-snippets"
+Bundle 'davidhalter/vim-snipmate'
+Bundle 'vim-scripts/Conque-Shell'
+Bundle 'vim-scripts/SuperTab'
 
 " Syntax Commenter
 Bundle 'vim-scripts/tComment'
@@ -35,13 +41,17 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Universal Syntax Checker + Completion
 "Bundle 'UltiSnips'
 Bundle 'scrooloose/syntastic'
-"Bundle "Shougo/neocomplcache"
+Bundle "Shougo/neocomplcache"
 
 " Python Syntax Checker
 Bundle 'kevinw/pyflakes-vim'
 Bundle 'vim-scripts/pep8'
 Bundle 'vim-scripts/Pydiction'
 Bundle "vim-scripts/indentpython.vim"
+
+" HTML5 and javascript syntax checkers
+Bundle 'othree/html5.vim'
+Bundle 'vim-scripts/jQuery'
 
 " Versioning System
 Bundle 'tpope/vim-fugitive'
@@ -143,6 +153,7 @@ set nolazyredraw "Don't redraw while executing macros
 set magic "Set magic on, for regular expressions
 
 set showmatch "Show matching bracets when text indicator is over them
+set ttyfast "Fast tty
 
 " No sound on errors
 set noerrorbells
@@ -159,7 +170,11 @@ set shell=/bin/bash
 set guioptions-=T
 set background=dark
 let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
-colorscheme mustang
+if has("gui_running")
+    colorscheme mustang
+else
+    colorscheme ir_black
+endif
 set nonu
 set gfn=Liberation\ Mono\ 10 
 
@@ -172,8 +187,8 @@ endtry
 if has("gui_running")
   " GUI is running or is about to start.
   " Maximize gvim window.
-  set lines=43
-  set co=87
+  set lines=50
+  set co=90
 endif
   
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -343,7 +358,6 @@ set viewoptions=folds
 au BufWinLeave * silent! mkview
 au BufWinEnter * silent! loadview
 
-autocmd Syntax c,cpp,vim,xml,html,xhtml,js,php,py,python set foldmethod=manual
 autocmd Syntax c,cpp,vim,xml,html,xhtml,perl normal zR
 
 "remove trailing whitespace
@@ -387,8 +401,8 @@ endif
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
 " insert mode
-autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+""autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+""autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " CUSTOM CONFIGURATION FOR INSTALLED PLUGIN
 "
@@ -400,7 +414,7 @@ autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 let g:pep8_map='<F6>'
 
 " Pydiction
-let g:pydiction_location='/home/ubuntu/.vim/bundle/Pydiction/complete-dict'
+let g:pydiction_location='/home/offlinehacker/.vim/bundle/Pydiction/complete-dict'
 
 """" PYTHON STYLE """"
 let python_highlight_all=1 " Enable all plugin's highlighting.
@@ -461,6 +475,8 @@ function! ToggleNERDTreeAndTagbar()
         TagbarOpen
     endif
 
+    pclose
+
 " Jump back to the original window
     for window in range(1, winnr('$'))
         execute window . 'wincmd w'
@@ -471,9 +487,9 @@ function! ToggleNERDTreeAndTagbar()
     endfor
 endfunction
 
-" now you can open NERDTree and Tagbar using F8
+" now you can open NERDTree and Tagbar using F7
 " http://stackoverflow.com/questions/6624043/how-to-open-or-close-nerdtree-and-tagbar-with-leader
-nmap <F8> :call ToggleNERDTreeAndTagbar()<CR>
+nmap <F7> :call ToggleNERDTreeAndTagbar()<CR>
 
 " TagBar Configuration
 let g:tagbar_usearrows=1
@@ -500,7 +516,7 @@ nnoremap <leader>l :TagbarToggle<CR>
 autocmd WinEnter * call s:CloseIfOnlyNerdTreeLeft()
 
 " Use leader + . for opening File Explorer
-map <leader>t :NERDTreeTabsToggle<CR>
+" map <leader>t :NERDTreeTabsToggle<CR>
 let g:NERDTreeShowBookmarks=1
 let g:NERDTreeMouseMode=3
 let g:NERDTreeWinSize=30
@@ -524,7 +540,7 @@ endfunction
 " Minibuffer{{{
 """"""""""""""""""""""""""""""
 "Show the miniBufExplorer from the start
-" let g:miniBufExplorerMoreThanOne = 0 
+let g:miniBufExplorerMoreThanOne = 0 
 
 "Not using because I don't use the vertival window
 "Use a vertical windows
@@ -565,7 +581,7 @@ highlight MBEVisibleChanged term=bold cterm=bold gui=bold guifg=Green
 
 let g:bufExplorerSortBy = "name"
 
-autocmd BufRead,BufNew :call UMiniBufExplorer
+" autocmd BufRead,BufNew :call UMiniBufExplorer
 
 """""""""""""""""""""""""""""""""""
 " Stolen from http://dev.gentoo.org/~bass/configs/vimrc.html
@@ -594,4 +610,66 @@ if has("autocmd")
                 \ exec oldwinnr . " wincmd w"
 endif
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+" Enable NeoComplcache 
+let g:neocomplcache_enable_at_startup = 1
+
+" Support for ctrl-c and alike
+source $VIMRUNTIME/mswin.vim
+behave mswin
+
+" Fold column site is 2
+set foldcolumn=2
+set foldlevelstart=20 " set foldlevel higher so opened buffers arent folded
+set foldmethod=indent
+
+" Open file
+nmap <silent> <C-o> :browse open<cr>
+
+" Tabs
+nmap <C-t> :tab split<CR>
+nmap <C-x> :tabclose<CR>
+nmap <C-Up> :tabn<CR>
+nmap <C-Down> :tabp<CR>
+nmap <C-d> :wq<CR>
+
+"" MULTIPAGE
+"" see: http://stackoverflow.com/questions/6873076/auto-scrollable-pagination-with-vim-using-vertical-split
+nmap <silent> <Leader>sp :vsplit<cr>
+
+" Shell
+nnoremap <leader>b :lcd %:p:h<CR>:ConqueTermSplit bash<CR>
+let g:ConqueTerm_CloseOnEnd = 1
+
+autocmd vimenter * TagbarOpen
+autocmd vimenter * NERDTree
+
+" Hack to put preview window on the bottom
+let g:snipMateAllowMatchingDot = -1
+autocmd vimenter * inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Hack to put preview window on the bottom
+function! PreviewDown()
+   if !&previewwindow
+       silent! wincmd P
+   endif
+   if &previewwindow
+       silent! wincmd J
+       silent! wincmd p
+   endif
+endf
+au BufWinEnter * call PreviewDown()
+
+set viminfo='10,\"100,:20,%,n~/.viminfo
+function! ResCur()
+  if line("'\"") <= line("$")
+    normal! g`"
+    return 1
+  endif
+endfunction
+
+augroup resCur
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
+augroup END
 
