@@ -447,57 +447,25 @@ if has("gui_running")
     highlight SpellBad term=underline gui=undercurl guisp=Orange
 endif
 
+function! OriginWindow()
+    for window in range(2, winnr('$'))
+        execute window . 'wincmd w'
+    endfor
+endfunction
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Open Window Explorer NerdTree & Tagbar using (left-right sidebar) using <F8>
 "
-function! ToggleNERDTreeAndTagbar()
-    let w:jumpbacktohere = 1
-
-" Detect which plugins are open
-    if exists('t:NERDTreeBufName')
-        let nerdtree_open = bufwinnr(t:NERDTreeBufName) != -1
-    else
-        let nerdtree_open = 0
-    endif
-    let tagbar_open = bufwinnr('__Tagbar__') != -1
-
-" Perform the appropriate action
-    if nerdtree_open && tagbar_open
-        NERDTreeClose
-        TagbarClose
-    elseif nerdtree_open
-        TagbarOpen
-    elseif tagbar_open
-        NERDTreeTabsToggle
-    else
-        NERDTreeTabsToggle
-        TagbarOpen
-    endif
-
-    pclose
-
-" Jump back to the original window
-    for window in range(1, winnr('$'))
-        execute window . 'wincmd w'
-        if exists('w:jumpbacktohere')
-            unlet w:jumpbacktohere
-            break
-        endif
-    endfor
-endfunction
-
 " now you can open NERDTree and Tagbar using F7
 " http://stackoverflow.com/questions/6624043/how-to-open-or-close-nerdtree-and-tagbar-with-leader
-nmap <F7> :call ToggleNERDTreeAndTagbar()<CR>
+nmap <F7> :NERDTreeTabsToggle<CR>:call OriginWindow()<CR>
+nmap <F5> :TagbarToggle<CR>
 
 " TagBar Configuration
 let g:tagbar_usearrows=1
 let g:tagbar_width=30
 let g:tagbar_singleclick=1
-
-" Use leader + l to open Tagbar in Right side
-nnoremap <leader>l :TagbarToggle<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""
 " NERDTree : https://github.com/scrooloose/nerdtree.git
@@ -554,7 +522,7 @@ let g:miniBufExplorerMoreThanOne = 0
 
 "Still haven't discovered what it does
 "let g:miniBufExplMapWindowNavArrows = 1
-"let g:miniBufExplMapCTabSwitchBufs = 1
+let g:miniBufExplMapCTabSwitchBufs = 1
 "let g:miniBufExplUseSingleClick = 1
 "let g:miniBufExplMapWindowNavVim = 1
 "
@@ -627,7 +595,7 @@ set foldmethod=indent
 nmap <silent> <C-o> :browse open<cr>
 
 " Tabs
-nmap <C-t> :tab split<CR>
+nmap <C-t> :tab split<CR>:MiniBufExplorer<CR>:call OriginWindow()<CR>
 nmap <C-x> :tabclose<CR>
 nmap <C-Up> :tabn<CR>
 nmap <C-Down> :tabp<CR>
@@ -641,7 +609,6 @@ nmap <silent> <Leader>sp :vsplit<cr>
 nnoremap <leader>b :lcd %:p:h<CR>:ConqueTermSplit bash<CR>
 let g:ConqueTerm_CloseOnEnd = 1
 
-autocmd vimenter * TagbarOpen
 autocmd vimenter * NERDTree
 
 " Hack to put preview window on the bottom
@@ -660,6 +627,7 @@ function! PreviewDown()
 endf
 au BufWinEnter * call PreviewDown()
 
+" Remember last position
 set viminfo='10,\"100,:20,%,n~/.viminfo
 function! ResCur()
   if line("'\"") <= line("$")
@@ -667,9 +635,10 @@ function! ResCur()
     return 1
   endif
 endfunction
-
 augroup resCur
   autocmd!
   autocmd BufWinEnter * call ResCur()
 augroup END
 
+" Select all
+nmap <C-a> ggVG
