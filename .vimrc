@@ -660,3 +660,7 @@ let g:snippets_base_directory=$HOME."/.vim/snippets/"
 " Make TAB and SHIFT+TAB work
 vnoremap <Tab> >
 vnoremap <S-Tab> <
+
+:nmap <c-s> :w<CR>
+:imap <c-s> <Esc>:w<CR>a
+:imap <c-s> <Esc><c-s>

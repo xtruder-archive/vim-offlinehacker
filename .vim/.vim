@@ -1,0 +1,1 @@
+/home/offlinehacker/vim-offlinehacker/.vim
