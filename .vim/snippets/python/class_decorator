@@ -1,0 +1,14 @@
+class Test(object):
+    "test"
+    def _decorator(foo):
+        @wraps(foo)
+        def magic(*args,**kwargs) :
+            print args[0].__class__
+            foo( *args, **kwargs )
+            print args[0].yes
+        return magic
+
+    @_decorator
+    def bar( self ) :
+        print self.__doc__
+        self.yes= 10

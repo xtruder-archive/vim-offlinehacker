@@ -27,10 +27,11 @@ Bundle 'mhz/vim-matchit'
 Bundle 'Raimondi/delimitMate'
 Bundle "MarcWeber/vim-addon-mw-utils"
 Bundle "tomtom/tlib_vim"
-Bundle "snipmate-snippets"
-Bundle 'davidhalter/vim-snipmate'
+"Bundle "snipmate-snippets"
+"Bundle 'msanders/snipmate.vim'
+"Bundle 'tlavi/SnipMgr'
 Bundle 'vim-scripts/Conque-Shell'
-Bundle 'vim-scripts/SuperTab'
+" Bundle 'vim-scripts/SuperTab'
 
 " Syntax Commenter
 Bundle 'vim-scripts/tComment'
@@ -42,16 +43,22 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 "Bundle 'UltiSnips'
 Bundle 'scrooloose/syntastic'
 Bundle "Shougo/neocomplcache"
+Bundle "Shougo/neocomplcache-snippets-complete"
 
 " Python Syntax Checker
 Bundle 'kevinw/pyflakes-vim'
 Bundle 'vim-scripts/pep8'
 Bundle 'vim-scripts/Pydiction'
 Bundle "vim-scripts/indentpython.vim"
+Bundle 'offlinehacker/autopydoc'
+Bundle 'tshirtman/vim-cython'
 
-" HTML5 and javascript syntax checkers
+" HTML and Javascript Syntax Checkers
+Bundle "manalang/jshint.vim"
 Bundle 'othree/html5.vim'
 Bundle 'vim-scripts/jQuery'
+Bundle 'jamescarr/snipmate-nodejs'
+Bundle 'guileen/vim-node'
 
 " Versioning System
 Bundle 'tpope/vim-fugitive'
@@ -187,8 +194,8 @@ endtry
 if has("gui_running")
   " GUI is running or is about to start.
   " Maximize gvim window.
-  set lines=50
-  set co=90
+  autocmd vimenter * :set lines=999
+  autocmd vimenter * :set columns=999
 endif
   
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -254,15 +261,12 @@ set colorcolumn=80 " Mark 80th column with a red line
 autocmd FileType python highlight OverLength ctermbg=darkred ctermfg=white guibg=#FFD9D9
 autocmd FileType python match OverLength /\%81v.\+/
 
-" Paste using ,v in normal mode
-nnoremap <leader>v "+gP
-
 " Set default environment based on current edited files
 autocmd BufEnter * silent! lcd %:p:h
 
 " The best thing here! 
 " In insert mode, you can paste from clipboard using CTRL+v
-inoremap <C-v> <ESC>:set paste<CR>"+gp<ESC>:set nopaste<ENTER>i<RIGHT>
+"inoremap <C-v> <ESC>:set paste<CR>"+gp<ESC>:set nopaste<ENTER>i<RIGHT>
 
 " have command-line completion <tab> (for filenames, help topics, option names)
 " first list the available options and complete the longest common part, then
@@ -581,10 +585,15 @@ endif
 
 " Enable NeoComplcache 
 let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_snippets_dir = $HOME . '/.vim/snippets'
+
+" snippets key binding
+imap <C-k>  <Plug>(neocomplcache_snippets_expand)
+smap <C-k>  <Plug>(neocomplcache_snippets_expand) 
 
 " Support for ctrl-c and alike
 source $VIMRUNTIME/mswin.vim
-behave mswin
+behave xterm
 
 " Fold column site is 2
 set foldcolumn=2
@@ -596,10 +605,9 @@ nmap <silent> <C-o> :browse open<cr>
 
 " Tabs
 nmap <C-t> :tab split<CR>:MiniBufExplorer<CR>:call OriginWindow()<CR>
-nmap <C-x> :tabclose<CR>
+nmap <C-d> :tabclose<CR>
 nmap <C-Up> :tabn<CR>
 nmap <C-Down> :tabp<CR>
-nmap <C-d> :wq<CR>
 
 "" MULTIPAGE
 "" see: http://stackoverflow.com/questions/6873076/auto-scrollable-pagination-with-vim-using-vertical-split
@@ -610,10 +618,6 @@ nnoremap <leader>b :lcd %:p:h<CR>:ConqueTermSplit bash<CR>
 let g:ConqueTerm_CloseOnEnd = 1
 
 autocmd vimenter * NERDTree
-
-" Hack to put preview window on the bottom
-let g:snipMateAllowMatchingDot = -1
-autocmd vimenter * inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Hack to put preview window on the bottom
 function! PreviewDown()
@@ -642,3 +646,17 @@ augroup END
 
 " Select all
 nmap <C-a> ggVG
+
+" Move betwene windows
+nmap <silent> <A-Up> :wincmd k<CR>
+nmap <silent> <A-Down> :wincmd j<CR>
+nmap <silent> <A-Left> :wincmd h<CR>
+nmap <silent> <A-Right> :wincmd l<CR>
+
+au FileType javascript set dictionary+=$HOME/.vim/bundle/vim-node/dict/node.dict
+
+let g:snippets_base_directory=$HOME."/.vim/snippets/"
+
+" Make TAB and SHIFT+TAB work
+vnoremap <Tab> >
+vnoremap <S-Tab> <
