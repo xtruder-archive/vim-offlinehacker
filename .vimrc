@@ -30,7 +30,7 @@ Bundle "tomtom/tlib_vim"
 "Bundle "snipmate-snippets"
 "Bundle 'msanders/snipmate.vim'
 "Bundle 'tlavi/SnipMgr'
-Bundle 'vim-scripts/Conque-Shell'
+Bundle 'lrvick/Conque-Shell'
 " Bundle 'vim-scripts/SuperTab'
 
 " Syntax Commenter
@@ -151,6 +151,7 @@ set ruler           "Always show current position
 set hid             "Change buffer - without saving
 set nohidden
 set mouse=a
+set ttymouse=xterm2
 
 " Set backspace config
 set backspace=eol,start,indent
@@ -405,8 +406,8 @@ endif
 " If you prefer the Omni-Completion tip window to close when a selection is
 " made, these lines close it on movement in insert mode or when leaving
 " insert mode
-""autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
-""autocmd InsertLeave * if pumvisible() == 0|pclose|endif
+"autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
+autocmd InsertLeave * if pumvisible() == 0|pclose|endif
 
 " CUSTOM CONFIGURATION FOR INSTALLED PLUGIN
 "
@@ -661,6 +662,42 @@ let g:snippets_base_directory=$HOME."/.vim/snippets/"
 vnoremap <Tab> >
 vnoremap <S-Tab> <
 
-:nmap <c-s> :w<CR>
-:imap <c-s> <Esc>:w<CR>a
-:imap <c-s> <Esc><c-s>
+" Saving in console
+if !has("gui_running")
+    :nmap <c-s> :w<CR>
+    :imap <c-s> <Esc>:w<CR>a
+    :imap <c-s> <Esc><c-s>
+endif
+
+" Font resizing for gvim
+let s:pattern = '^\(.* \)\([1-9][0-9]*\)$'
+let s:minfontsize = 6
+let s:maxfontsize = 16
+function! AdjustFontSize(amount)
+  if has("gui_gtk2") && has("gui_running")
+    let fontname = substitute(&guifont, s:pattern, '\1', '')
+    let cursize = substitute(&guifont, s:pattern, '\2', '')
+    let newsize = cursize + a:amount
+    if (newsize >= s:minfontsize) && (newsize <= s:maxfontsize)
+      let newfont = fontname . newsize
+      let &guifont = newfont
+    endif
+  else
+    echoerr "You need to run the GTK2 version of Vim to use this function."
+  endif
+endfunction
+
+function! LargerFont()
+  call AdjustFontSize(1)
+endfunction
+command! LargerFont call LargerFont()
+
+function! SmallerFont()
+  call AdjustFontSize(-1)
+endfunction
+command! SmallerFont call SmallerFont()
+
+if has("gui_running")
+    nnoremap <C-Up> :silent! LargerFont<CR>
+    nnoremap <C-Down> :silent! SmallerFont<CR>
+endif
