@@ -31,7 +31,7 @@ Bundle "tomtom/tlib_vim"
 "Bundle 'msanders/snipmate.vim'
 "Bundle 'tlavi/SnipMgr'
 Bundle 'lrvick/Conque-Shell'
-" Bundle 'vim-scripts/SuperTab'
+Bundle 'vim-scripts/SuperTab'
 
 " Syntax Commenter
 Bundle 'vim-scripts/tComment'
@@ -52,6 +52,12 @@ Bundle 'vim-scripts/Pydiction'
 Bundle "vim-scripts/indentpython.vim"
 Bundle 'offlinehacker/autopydoc'
 Bundle 'tshirtman/vim-cython'
+
+" Python refractoring
+Bundle 'klen/rope-vim'
+
+" Lua
+Bundle "xolox/vim-lua-ftplugin"
 
 " HTML and Javascript Syntax Checkers
 Bundle "manalang/jshint.vim"
@@ -334,6 +340,7 @@ autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php,ctp set omnifunc=phpcomplete#CompletePHP
 autocmd FileType vim set omnifunc=syntaxcomplete#Complete
+autocmd FileType lua set omnifunc=xolox#lua#omnifunc
 
 " markdown
 au BufEnter,Bufread *.mkd,*.md,*.mdown,*.markdown set tw=0
@@ -471,6 +478,9 @@ nmap <F5> :TagbarToggle<CR>
 let g:tagbar_usearrows=1
 let g:tagbar_width=30
 let g:tagbar_singleclick=1
+
+" Lua omnifunc enable
+let g:lua_complete_omni = 1
 
 """"""""""""""""""""""""""""""""""""""""""""
 " NERDTree : https://github.com/scrooloose/nerdtree.git

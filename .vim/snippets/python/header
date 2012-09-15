@@ -1,0 +1,10 @@
+# -*- coding: utf-8 -*-
+"""
+.. module:: GlacierWrapper
+   :platform: Unix, Windows
+   :synopsis: Wrapper for glacier, with amazon sdb support and other features
+
+.. moduleauthor:: Jaka Hudoklin <jakahudoklin@gmail.com>,
+                  Urban škudnik <urban.skudnik@gmail.com>
+
+"""
