@@ -15,7 +15,7 @@ Bundle 'FuzzyFinder'
 Bundle 'vim-scripts/mru.vim'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'scrooloose/nerdtree'
-Bundle 'jistr/vim-nerdtree-tabs'
+undle 'jistr/vim-nerdtree-tabs'
 Bundle 'sjl/gundo.vim'
 
 " Color scheme
@@ -43,7 +43,7 @@ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}
 "Bundle 'UltiSnips'
 Bundle 'scrooloose/syntastic'
 Bundle "Shougo/neocomplcache"
-Bundle "Shougo/neocomplcache-snippets-complete"
+Bundle "Shougo/neosnippet"
 
 " Python Syntax Checker
 Bundle 'kevinw/pyflakes-vim'
@@ -187,7 +187,8 @@ let g:CSApprox_attr_map = { 'bold' : 'bold', 'italic' : '', 'sp' : '' }
 if has("gui_running")
     colorscheme mustang
 else
-    colorscheme ir_black
+    set background=dark
+    colorscheme solarized
 endif
 set nonu
 set gfn=Liberation\ Mono\ 10 
@@ -598,9 +599,13 @@ endif
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_snippets_dir = $HOME . '/.vim/snippets'
 
-" snippets key binding
-imap <C-k>  <Plug>(neocomplcache_snippets_expand)
-smap <C-k>  <Plug>(neocomplcache_snippets_expand) 
+" Plugin key-mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
 " Support for ctrl-c and alike
 source $VIMRUNTIME/mswin.vim
@@ -666,7 +671,7 @@ nmap <silent> <A-Right> :wincmd l<CR>
 
 au FileType javascript set dictionary+=$HOME/.vim/bundle/vim-node/dict/node.dict
 
-let g:snippets_base_directory=$HOME."/.vim/snippets/"
+let g:neosnippet#snippets_directory="~/.vim/snippets/"
 
 " Make TAB and SHIFT+TAB work
 vnoremap <Tab> >
