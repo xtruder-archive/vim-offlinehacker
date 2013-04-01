@@ -15,7 +15,7 @@ Bundle 'FuzzyFinder'
 Bundle 'vim-scripts/mru.vim'
 Bundle 'fholgado/minibufexpl.vim'
 Bundle 'scrooloose/nerdtree'
-undle 'jistr/vim-nerdtree-tabs'
+Bundle 'jistr/vim-nerdtree-tabs'
 Bundle 'sjl/gundo.vim'
 
 " Color scheme
